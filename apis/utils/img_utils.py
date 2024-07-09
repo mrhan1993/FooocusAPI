@@ -106,10 +106,26 @@ async def read_input_image(input_image: UploadFile | str | None) -> np.ndarray |
             async with httpx.AsyncClient() as client:
                 response = await client.get(input_image, headers=headers, timeout=20)
                 input_image_bytes = response.content
-        except:
+        except Exception:
             return None
     else:
         input_image_bytes = base64.b64decode(input_image)
+    pil_image = Image.open(BytesIO(input_image_bytes))
+    image = np.array(pil_image, dtype=np.uint8)
+    return image
+
+
+def upload_to_array(input_image: UploadFile | str | None) -> np.ndarray | None:
+    """
+    Read input image from UploadFile or base64 string.
+    Args:
+        input_image: UploadFile, or base64 image string, or None
+    Returns:
+        numpy array of image
+    """
+    if input_image is None or input_image in ('', 'None', 'null', 'string', 'none'):
+        return None
+    input_image_bytes = base64.b64decode(input_image)
     pil_image = Image.open(BytesIO(input_image_bytes))
     image = np.array(pil_image, dtype=np.uint8)
     return image
