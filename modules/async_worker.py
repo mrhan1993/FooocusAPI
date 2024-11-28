@@ -99,21 +99,10 @@ class AsyncTask:
         self.invert_mask_checkbox = args.pop()
         self.inpaint_erode_or_dilate = args.pop()
 
-        if not args_manager.args.disable_image_log:
-            self.save_final_enhanced_image_only = args.pop()
-        else:
-            self.save_final_enhanced_image_only = False
-            args.pop()
-        if not args_manager.args.disable_metadata:
-            self.save_metadata_to_images = args.pop()
-        else:
-            self.save_metadata_to_images = False
-            args.pop()
-        if args_manager.args.disable_metadata:
-            self.metadata_scheme = MetadataScheme(args.pop())
-        else:
-            self.metadata_scheme = MetadataScheme.FOOOCUS
-            args.pop()
+        self.save_final_enhanced_image_only = args.pop() if not args_manager.args.disable_image_log else False
+        self.save_metadata_to_images = args.pop() if not args_manager.args.disable_metadata else False
+        self.metadata_scheme = MetadataScheme(
+            args.pop()) if not args_manager.args.disable_metadata else MetadataScheme.FOOOCUS
 
         self.cn_tasks = {x: [] for x in ip_list}
         for _ in range(modules.config.default_controlnet_image_count):
