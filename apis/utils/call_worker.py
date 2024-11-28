@@ -82,6 +82,7 @@ async def execute_in_background(task: AsyncTask, raw_req: CommonRequest, in_queu
             if flag == 'finish':
                 finished = True
                 CurrentTask.task = None
+                CurrentTask.ct = None
                 return await post_worker(task=task, started_at=started_at, target_name=save_name, ext=ext)
 
 
@@ -164,6 +165,7 @@ async def stream_output(request: CommonRequest):
                 yield f"{text}\n"
                 finished = True
                 CurrentTask.task = None
+                CurrentTask.ct = None
 
 
 async def binary_output(
@@ -208,6 +210,7 @@ async def binary_output(
             if flag == 'finish':
                 finished = True
                 CurrentTask.task = None
+                CurrentTask.ct = None
                 await post_worker(task=task, started_at=started_at, target_name=save_name, ext=ext)
     try:
         image = Image.open(task.results[0])
