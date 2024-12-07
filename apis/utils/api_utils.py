@@ -101,7 +101,7 @@ def params_to_params(req: object) -> list:
         req.inpaint_erode_or_dilate
     ])
     if not args.disable_image_log:
-        params.extend(req.save_final_enhanced_image_only)
+        params.extend([req.save_final_enhanced_image_only])
     if not args.disable_metadata:
         params.extend([
             req.save_metadata_to_images,
