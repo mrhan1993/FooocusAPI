@@ -3,6 +3,7 @@ Do something after generate
 """
 import datetime
 import os
+import numpy as np
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -48,7 +49,8 @@ async def post_worker(task: AsyncTask, started_at: int, target_name: str, ext: s
     if task.last_stop in ['stop', 'skip']:
         task_status = task.last_stop
     try:
-        results = change_filename(task.results, target_name, ext)
+        task_results = [task_result for task_result in task.results if not isinstance(task_result, np.ndarray)]
+        results = change_filename(task_results, target_name, ext)
         task.results = results
         query = session.query(GenerateRecord).filter(GenerateRecord.task_id == task.task_id).first()
         query.start_mills = started_at
@@ -58,8 +60,9 @@ async def post_worker(task: AsyncTask, started_at: int, target_name: str, ext: s
         query.result = url_path(results)
         finally_result = str(query)
         session.commit()
-        await send_result_to_web_hook(query.webhook_url, finally_result)
+        await send_result_to_web_hook(str(query.webhook_url), finally_result)
         return finally_result
     except Exception as e:
         print(e)
+
     CurrentTask.ct = None

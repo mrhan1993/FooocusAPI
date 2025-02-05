@@ -9,7 +9,7 @@ The docker image is based on NVIDIA CUDA 12.4 and PyTorch 2.1, see [Dockerfile](
 
 ## Quick start
 
-**More information in the [notes](#notes).**
+**More information in the [notes](#Notes).**
 
 ### Running with Docker Compose
 
@@ -98,13 +98,13 @@ Since `/content/data` is a persistent volume folder, your files will be persiste
 
 ### Paths inside the container
 
-|Path|Details|
-|-|-|
-|/content/app|The application stored folder|
-|/content/app/models.org|Original 'models' folder.<br> Files are copied to the '/content/app/models' which is symlinked to '/content/data/models' every time the container boots. (Existing files will not be overwritten.) |
-|/content/data|Persistent volume mount point|
-|/content/data/models|The folder is symlinked to '/content/app/models'|
-|/content/data/outputs|The folder is symlinked to '/content/app/outputs'|
+| Path                    | Details                                                                                                                                                                                            |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /content/app            | The application stored folder                                                                                                                                                                      |
+| /content/app/models.org | Original 'models' folder.<br> Files are copied to the '/content/app/models' which is symlinked to '/content/data/models' every time the container boots. (Existing files will not be overwritten.) |
+| /content/data           | Persistent volume mount point                                                                                                                                                                      |
+| /content/data/models    | The folder is symlinked to '/content/app/models'                                                                                                                                                   |
+| /content/data/outputs   | The folder is symlinked to '/content/app/outputs'                                                                                                                                                  |
 
 ### Environments
 
