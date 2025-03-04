@@ -72,7 +72,7 @@ async def execute_in_background(task: AsyncTask, raw_req: CommonRequest, in_queu
                 )
                 CurrentTask.task = task
             flag, product = task.yields.pop(0)
-            if flag == 'preview':
+            if flag == 'preview' and CurrentTask.ct != None:
                 if len(task.yields) > 0:
                     if task.yields[0][0] == 'preview':
                         continue
